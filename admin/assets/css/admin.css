@@ -1,0 +1,27 @@
+body{
+	font-size: 0.875rem;
+}
+.sidebar{
+	z-index: 100;
+	box-shadow: inset-1px 0 0 0 0 rgba(0, 0, 0, 0.1);
+}
+.nav-item:hover
+{
+	background-color: grey;
+}
+.nav-item.active
+{
+	background: #002100
+}
+
+.wrapper{
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#render-map{
+	width: 600px;
+	height: 350px;
+	background: #f4f4f4;
+}
