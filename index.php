@@ -6,7 +6,7 @@
 </head>
 <body>
  
-	<h1>Membuat Login Multi User Level Dengan PHP dan MySQLi <br/> www.malasngoding.com</h1>
+
 
 	<?php 
 	if(isset($_GET['pesan'])){
