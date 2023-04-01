@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
               <form method="POST">
                 <label>
                   <input type="text" name="id_penyakit" value="<?= $data['id_penyakit'] ?>">
-                  <input type="checkbox" name="penyakit[]" value="<?= $data['nama_gejala'] ?>">
+                  <input type="checkbox" name="penyakit[]" value="<?= $data['id_penyakit'] ?>">
                   <?= $data['nama_gejala'] ?>
                 </label><br>
               <?php
@@ -113,30 +113,18 @@ if (isset($_POST['submit'])) {
         <?php
         if (isset($_POST['simpan'])) {
           $penyakit = $_POST['penyakit'];
-          $id_penyakit = $_POST['id_penyakit'];
-          $jumlah = count($penyakit);
-          echo "Anda memilih penyakit : <br>";
-          for ($i = 0; $i < $jumlah; $i++) {
-            echo "- " . $penyakit[$i] . "<br>";
-          }
-          echo count($penyakit) . "<br>";
+          $new_arr = array_count_values($penyakit);
+          $max = max($new_arr);
+          $new_arr = array_keys($new_arr, max($new_arr));
+          $pilih_gejala =  $new_arr[0];
+          // echo $pilih_gejala." is repeated (".$max.") times.";
 
-          $sql = mysqli_query($koneksi, "SELECT COUNT(id_penyakit) as total FROM gejala WHERE id_penyakit = '$id_penyakit'");
+          $sql = mysqli_query($koneksi,"SELECT * FROM penyakit where id_penyakit = $pilih_gejala");
           $row = mysqli_fetch_assoc($sql);
-          $total  = $row['total'];
-          echo $total;
-          $sql2 = mysqli_query($koneksi, "SELECT * FROM penyakit where id_penyakit = $id_penyakit");
-          $row2 = mysqli_fetch_assoc($sql2);
-          $id_gejala = $row2['nama_penyakit'];
-          $nama_penyakit = $row2['nama_penyakit'];
-          $id_penyakit = $row2['id_penyakit'];
-          while ($data = mysqli_fetch_array($sql2)) {
-            $jumlah_benar = count($penyakit);
-            $persen = ($jumlah_benar / $total) * 100;
-          }
-          if ($persen) {
-            echo "Anda menderita penyakit " . $nama_penyakit . " dengan persentase " . $persen . "%";
-          }
+          echo "Berdasarkan Hasil Analisa Kami, Anda Menderita  <br>";
+          echo "Penyakit:".$row['nama_penyakit']."<br>";
+          echo "Solusi:".$row['solusi'];
+         
         }
         ?>
       </div>
