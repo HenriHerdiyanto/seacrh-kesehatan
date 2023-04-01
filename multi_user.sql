@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2023 at 08:45 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Apr 01, 2023 at 04:36 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `gejala` (
   `kode_gejala` varchar(11) NOT NULL,
   `nama_gejala` varchar(255) NOT NULL,
   `pertanyaan` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `gejala`
@@ -77,6 +77,28 @@ INSERT INTO `gejala` (`id_gejala`, `id_penyakit`, `kode_gejala`, `nama_gejala`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `history`
+--
+
+CREATE TABLE `history` (
+  `id_history` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `nama_penyakit` varchar(255) NOT NULL,
+  `tanggal` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `history`
+--
+
+INSERT INTO `history` (`id_history`, `id_user`, `nama_penyakit`, `tanggal`) VALUES
+(2, 0, 'Malaria Falsiparum', '2023-04-01'),
+(4, 3, 'Malaria Malariae', '2023-04-01'),
+(5, 3, 'Malaria Malariae', '2023-04-01');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `penyakit`
 --
 
@@ -85,7 +107,7 @@ CREATE TABLE `penyakit` (
   `kode_penyakit` varchar(10) NOT NULL,
   `nama_penyakit` varchar(255) NOT NULL,
   `solusi` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `penyakit`
@@ -110,7 +132,7 @@ CREATE TABLE `user` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `level` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `user`
@@ -130,6 +152,12 @@ INSERT INTO `user` (`id`, `nama`, `username`, `password`, `level`) VALUES
 --
 ALTER TABLE `gejala`
   ADD PRIMARY KEY (`id_gejala`);
+
+--
+-- Indexes for table `history`
+--
+ALTER TABLE `history`
+  ADD PRIMARY KEY (`id_history`);
 
 --
 -- Indexes for table `penyakit`
@@ -152,6 +180,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `gejala`
   MODIFY `id_gejala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `history`
+--
+ALTER TABLE `history`
+  MODIFY `id_history` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `penyakit`
