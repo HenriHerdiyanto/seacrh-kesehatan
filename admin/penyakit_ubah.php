@@ -43,7 +43,6 @@ if (isset($_POST["simpan"])) {
 	$nama_penyakit = $_POST["nama_penyakit"];
 	$solusi = $_POST["solusi"];
 
-
 	$koneksi->query("UPDATE penyakit SET
 		kode_penyakit = '$kode_penyakit', nama_penyakit = '$nama_penyakit', solusi='$solusi' WHERE id_penyakit = '$id_penyakit'");
 

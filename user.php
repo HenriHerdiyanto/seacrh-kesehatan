@@ -62,26 +62,22 @@ if (isset($_POST['submit'])) {
   <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
 
   <!-- ======= Header ======= -->
-  <header id="header">
+  <header id="header" style="background-color: #284cf0;">
     <div class="d-flex flex-column">
 
       <div class="profile">
         <img src="assets/img/profile-img.jpg" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-light"><a href="index.html"><?php echo $user . "dan" . $level ?></a></h1>
+        <h1 class="text-light"><a href="index.html"><?php echo $user . "<br>" . "(" . $level . ")" ?></a></h1>
         <div class="social-links mt-3 text-center">
-          <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-          <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-          <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-          <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-          <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+
         </div>
       </div>
 
       <nav id="navbar" class="nav-menu navbar">
         <ul>
-          <li><a href="#home" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-          <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Hasil</span></a></li>
-          <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>History</span></a></li>
+          <li><a href="user.php" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="about.php" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
+          <li><a href="history.php" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>History</span></a></li>
           <li><a href="logout.php" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Logout</span></a></li>
         </ul>
       </nav><!-- .nav-menu -->
@@ -91,292 +87,139 @@ if (isset($_POST['submit'])) {
   <!-- ======= Hero Section ======= -->
 
   <main id="main">
+    <nav class="navbar bg-primary">
+      <div class="container-fluid">
+        <b class="navbar-brand text-white">SISTEM PAKAR DIAGNOSA PENYAKIT MALARIA</b>
+      </div>
+    </nav>
     <section style="margin-top: -5%;" id="home" class="ms-3 fw-bold">
-      <h4>Ketahui Penyakitmu</h4>
+      <!-- <h4>Ketahui Penyakitmu</h4> -->
       <div class="container">
-        <div class="table-responsive">
-          <table class="table table-hover table-bordered">
-            <?php
-            $sql = mysqli_query($koneksi, "SELECT * FROM gejala INNER JOIN penyakit ON gejala.id_penyakit = penyakit.id_penyakit GROUP BY gejala.kode_gejala");
-            while ($data = mysqli_fetch_array($sql)) { ?>
-              <form method="POST">
-                <label>
-                  <input type="text" name="id_penyakit" value="<?= $data['id_penyakit'] ?>">
-                  <input type="checkbox" name="penyakit[]" value="<?= $data['id_penyakit'] ?>">
-                  <?= $data['nama_gejala'] ?>
-                </label><br>
-                <?php
-              }
-              ?>
-              <input type="submit" class="btn btn-outline-info" name="simpan" value="Simpan">
-            </form>
-          </table>
-        </div>
-        <?php
-        if (isset($_POST['simpan'])) {
-          $penyakit = $_POST['penyakit'];
-          $new_arr = array_count_values($penyakit);
-          $max = max($new_arr);
-          $new_arr = array_keys($new_arr, max($new_arr));
-          $pilih_gejala =  $new_arr[0];
-          // echo $pilih_gejala." is repeated (".$max.") times.";
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="table-responsive">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Daftar Gejala</h4>
+                  <form method="POST">
+                    <table class="table table-hover table-bordered">
+                      <?php
+                      $sql = mysqli_query($koneksi, "SELECT * FROM gejala INNER JOIN penyakit ON gejala.id_penyakit = penyakit.id_penyakit GROUP BY gejala.kode_gejala");
+                      while ($data = mysqli_fetch_array($sql)) {
+                      ?>
+                        <tr>
+                          <td>
+                            <label>
+                              <input type="hidden" name="id_penyakit" value="<?= $data['id_penyakit'] ?>">
+                              <input type="checkbox" name="penyakit[]" value="<?= $data['id_penyakit'] ?>">
+                              <?= $data['nama_gejala'] ?>
+                            </label>
+                          </td>
+                        </tr>
+                      <?php
+                      }
+                      ?>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                  </form>
+                </div>
+              </div>
 
-          $sql = mysqli_query($koneksi,"SELECT * FROM penyakit where id_penyakit = $pilih_gejala");
-          $row = mysqli_fetch_assoc($sql);
-          echo "Berdasarkan Hasil Analisa Kami, Anda Menderita  <br>";
-          echo "Penyakit:".$row['nama_penyakit']."<br>";
-          echo "Solusi:".$row['solusi'];
-          $penyakit = $row['nama_penyakit'];
-          $tanggal = date('Y:m:d');
-
-
-          $koneksi->query("INSERT INTO history(id_user,nama_penyakit,tanggal) VALUES ('$id_user','$penyakit','$tanggal')");
-          echo "<script>alert ('Data ditambahkan')</script>";
-
-        }
-        ?>
-      </div>
-    </div>
-  </section><!-- End Hero -->
-
-  <!-- ======= About Section ======= -->
-  <section id=" about" class="about">
-    <div class="container">
-
-      <div class="section-title">
-        <h2>About</h2>
-        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4" data-aos="fade-right">
-          <img src="assets/img/profile-img.jpg" class="img-fluid" alt="">
-        </div>
-        <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
-          <h3>UI/UX Designer &amp; Web Developer.</h3>
-          <p class="fst-italic">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua.
-          </p>
-          <div class="row">
-            <div class="col-lg-6">
-              <ul>
-                <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>1 May 1995</span></li>
-                <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span>www.example.com</span></li>
-                <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+123 456 7890</span></li>
-                <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>New York, USA</span></li>
-              </ul>
-            </div>
-            <div class="col-lg-6">
-              <ul>
-                <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>30</span></li>
-                <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Master</span></li>
-                <li><i class="bi bi-chevron-right"></i> <strong>PhEmailone:</strong> <span>email@example.com</span></li>
-                <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
-              </ul>
             </div>
           </div>
-          <p>
-            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
-            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis culpa magni laudantium dolores.
-          </p>
-        </div>
-      </div>
+          <div class="col-sm-6">
+            <div class="table-responsive">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Daftar Penyakit</h4>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nama Penyakit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      $sql = mysqli_query($koneksi, "SELECT * FROM penyakit");
+                      while ($data = mysqli_fetch_array($sql)) {
+                      ?>
+                        <tr>
+                          <td><?= $data['nama_penyakit'] ?></td>
+                        </tr>
+                      <?php
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
 
-    </div>
-  </section><!-- End About Section -->
-
-  <!-- ======= Facts Section ======= -->
-  <section id="facts" class="facts">
-    <div class="container">
-
-      <div class="section-title">
-        <h2>Facts</h2>
-        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-      </div>
-
-      <div class="row no-gutters">
-
-        <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up">
-          <div class="count-box">
-            <i class="bi bi-emoji-smile"></i>
-            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Happy Clients</strong> consequuntur quae</p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="100">
-          <div class="count-box">
-            <i class="bi bi-journal-richtext"></i>
-            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Projects</strong> adipisci atque cum quia aut</p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="200">
-          <div class="count-box">
-            <i class="bi bi-headset"></i>
-            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Hours Of Support</strong> aut commodi quaerat</p>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="300">
-          <div class="count-box">
-            <i class="bi bi-people"></i>
-            <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
-            <p><strong>Hard Workers</strong> rerum asperiores dolor</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section><!-- End Facts Section -->
-
-  <!-- ======= Skills Section ======= -->
-  <section id="skills" class="skills section-bg">
-    <div class="container">
-
-      <div class="section-title">
-        <h2>Skills</h2>
-        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-      </div>
-
-      <div class="row skills-content">
-
-        <div class="col-lg-6" data-aos="fade-up">
-
-          <div class="progress">
-            <span class="skill">HTML <i class="val">100%</i></span>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
 
-          <div class="progress">
-            <span class="skill">CSS <i class="val">90%</i></span>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-
-          <div class="progress">
-            <span class="skill">JavaScript <i class="val">75%</i></span>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
 
         </div>
-
-        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-
-          <div class="progress">
-            <span class="skill">PHP <i class="val">80%</i></span>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-
-          <div class="progress">
-            <span class="skill">WordPress/CMS <i class="val">90%</i></span>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-
-          <div class="progress">
-            <span class="skill">Photoshop <i class="val">55%</i></span>
-            <div class="progress-bar-wrap">
-              <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-
-        </div>
-
       </div>
+    </section><!-- End Hero -->
 
-    </div>
-  </section><!-- End Skills Section -->
+    <section id="about">
 
-  <!-- ======= Resume Section ======= -->
-  <section id="resume" class="resume">
-    <div class="container">
+      <?php
+      if (isset($_POST['simpan'])) {
+        $penyakit = $_POST['penyakit'];
+        $new_arr = array_count_values($penyakit);
+        $max = max($new_arr);
+        $new_arr = array_keys($new_arr, max($new_arr));
+        $pilih_gejala =  $new_arr[0];
+        // echo $pilih_gejala." is repeated (".$max.") times.";
 
-      <div class="section-title">
-        <h2>History</h2>
-        <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
-      </div>
-      <?php 
-      $history = array();
-      $ambil_history = $koneksi->query("SELECT * FROM history LEFT JOIN penyakit ON history.nama_penyakit = penyakit.nama_penyakit WHERE id_user = '$id_user'");
-      while ($tiap_history = $ambil_history->fetch_assoc()) {
-        $history[] = $tiap_history;
+        $sql = mysqli_query($koneksi, "SELECT * FROM penyakit where id_penyakit = $pilih_gejala");
+        $row = mysqli_fetch_assoc($sql);
+
+        echo "<div class='container'>";
+        echo "<div class='card'>";
+        echo "<div class='card-body'>";
+        echo "<h4 class='card-title'>Hasil Diagnosis Penyakit</h4>";
+        echo "<p class='card-text'>Berdasarkan hasil analisa kami, Anda menderita:</p>";
+        echo "<ul class='list-group list-group-flush'>";
+        echo "<li class='list-group-item'>Penyakit: " . $row['nama_penyakit'] . "</li>";
+        echo "<li class='list-group-item'>Solusi: " . $row['solusi'] . "</li>";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        $penyakit = $row['nama_penyakit'];
+        $tanggal = date('Y:m:d');
+
+
+        $koneksi->query("INSERT INTO history(id_user,nama_penyakit,tanggal) VALUES ('$id_user','$penyakit','$tanggal')");
+        echo "<script>alert ('Data ditambahkan')</script>";
       }
-
       ?>
+    </section>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">No</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Nama Penyakit</th>
-            <th scope="col">Solusi</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider">
-          <?php foreach ($history as $key => $value) {?>
-            <tr>
 
-              <th scope="row"><?php echo $key + 1; ?></th>
-              <td><?php echo $value['tanggal']; ?></td>
-              <td><?php echo $value["nama_penyakit"]; ?></td>
-              <td><?php echo $value["solusi"] ?></td>
-            </tr>
-          <?php } ?>
 
-        </tbody>
-      </table>
 
-    </div>
-  </section><!-- End Resume Section -->
+  </main><!-- End #main -->
 
-</main><!-- End #main -->
 
-<!-- ======= Footer ======= -->
-<footer id="footer">
-  <div class="container">
-    <div class="copyright">
-      &copy; Copyright <strong><span>iPortfolio</span></strong>
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </div>
-</footer><!-- End  Footer -->
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-<!-- Vendor JS Files -->
-<script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-<script src="assets/vendor/aos/aos.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-<script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-<script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-<script src="assets/vendor/typed.js/typed.min.js"></script>
-<script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
-<!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
 
 </body>
 

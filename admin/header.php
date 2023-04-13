@@ -39,10 +39,6 @@ include "../koneksi.php";
 		</a>
 		<div class="navbar-nav">
 			<div class="navbar-item">
-				<a href="profil.php" class="nav-link px-4" style="display: inline-block;">
-					<i class="bi bi-person-circle"></i>
-					Profil
-				</a>
 				<a class="nav-link px-4" href="../logout.php" style="display: inline-block;">
 					<i class="bi bi-box-arrow-right"></i>
 					Sign Out
@@ -55,8 +51,6 @@ include "../koneksi.php";
 		<div class="row">
 			<nav id="sidebar" class="col-md-3 col-lg-2 position-fixed start-0 top-0 bottom-0 py-5 collapse d-md-block sidebar" style="background: #0C3B0C;">
 				<div class="container mt-5 text-center">
-					<img src="..">
-					<h6 class="text-white py-2">nama admin</h6>
 				</div>
 				<div class="pt-3">
 					<ul class="nav flex-column">
