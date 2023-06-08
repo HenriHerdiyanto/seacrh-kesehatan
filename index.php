@@ -28,12 +28,6 @@
 	<link href="assets/css/style.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<<<<<<< HEAD
-=======
-<body>
- 
-
->>>>>>> db31d5ef9ad21f632f2699cdf82ee9ec0e2155cb
 
 <body>
 

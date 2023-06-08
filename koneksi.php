@@ -1,6 +1,6 @@
 <?php
 
-$koneksi = mysqli_connect("localhost", "root", "", "multi_user");
+$koneksi = mysqli_connect("localhost", "root", "", "malaria");
 
 // Check connection
 if (mysqli_connect_errno()) {

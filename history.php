@@ -76,7 +76,6 @@ if (isset($_POST['submit'])) {
             <nav id="navbar" class="nav-menu navbar">
                 <ul>
                     <li><a href="user.php" class="nav-link scrollto "><i class="bx bx-home"></i> <span>Home</span></a></li>
-                    <li><a href="about.php" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
                     <li><a href="history.php" class="nav-link scrollto active"><i class="bx bx-file-blank"></i> <span>History</span></a></li>
                     <li><a href="logout.php" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Logout</span></a></li>
                 </ul>
